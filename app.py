@@ -43,7 +43,8 @@ def start_channel(channel_name: str):
 def run():
     try:
         # load config
-        load_config()
+        config_path = sys.argv[1]
+        load_config(config_path)
         # ctrl + c
         sigterm_handler_wrap(signal.SIGINT)
         # kill signal
