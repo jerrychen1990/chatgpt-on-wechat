@@ -1,8 +1,6 @@
 {
   "channel_type": "wechatmp",
   "model": "glm-4",
-  "open_ai_api_key": "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",
-  "zhipu_ai_api_key": "3aeba2365174e850ba45417a16252a09.6gYmkzwLybkub5EW",
   "zhipu_ai_api_base": "https://open.bigmodel.cn/api/paas/v4",
   "claude_api_key": "",
   "wechatmp_app_id": "wx05fc6cb461aeade8",

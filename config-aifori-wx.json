@@ -5,7 +5,6 @@
   "clear_memory_commands": "清除记忆",
   "bot_type": "aifori",
   "hot_reload": true,
-  "open_ai_api_key": "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",
   "text_to_image": "dall-e-2",
   "voice_to_text": "aifori",
   "text_to_voice": "aifori",
