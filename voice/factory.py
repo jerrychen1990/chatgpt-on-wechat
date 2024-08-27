@@ -50,4 +50,7 @@ def create_voice(voice_type):
         from voice.xunfei.xunfei_voice import XunfeiVoice
 
         return XunfeiVoice()
+    elif voice_type == "aifori":
+        from voice.aifori.aifori_voice import AiforiVoice
+        return AiforiVoice()
     raise RuntimeError

@@ -13,6 +13,8 @@ from common.log import logger
 available_setting = {
     # openai api配置
     "open_ai_api_key": "",  # openai api key
+    "aifori_url": "http://127.0.0.1:9001", # Aifori服务地址
+    "aifori_assistant_id": "Aifori_wechat", # Aifori助手ID
     # openai apibase，当use_azure_chatgpt为true时，需要设置对应的api base
     "open_ai_api_base": "https://api.openai.com/v1",
     "proxy": "",  # openai使用的代理
@@ -44,7 +46,7 @@ available_setting = {
     # Azure OpenAI DALL-E API 配置, 当use_azure_chatgpt为true时,用于将文字回复的资源和Dall-E的资源分开.
     "azure_openai_dalle_api_base": "", # [可选] azure openai 用于回复图片的资源 endpoint，默认使用 open_ai_api_base
     "azure_openai_dalle_api_key": "", # [可选] azure openai 用于回复图片的资源 key，默认使用 open_ai_api_key
-    "azure_openai_dalle_deployment_id":"", # [可选] azure openai 用于回复图片的资源 deployment id，默认使用 text_to_image
+    "azure_openai_dalle_deployment_id": "", # [可选] azure openai 用于回复图片的资源 deployment id，默认使用 text_to_image
     "image_proxy": True,  # 是否需要图片代理，国内访问LinkAI时需要
     "image_create_prefix": ["画", "看", "找"],  # 开启图片回复的前缀
     "concurrency_in_session": 1,  # 同一会话最多有多少条消息在处理中，大于1可能乱序
@@ -147,10 +149,10 @@ available_setting = {
     "feishu_token": "",  # 飞书 verification token
     "feishu_bot_name": "",  # 飞书机器人的名字
     # 钉钉配置
-    "dingtalk_client_id": "",  # 钉钉机器人Client ID 
+    "dingtalk_client_id": "",  # 钉钉机器人Client ID
     "dingtalk_client_secret": "",  # 钉钉机器人Client Secret
     "dingtalk_card_enabled": False,
-    
+
     # chatgpt指令自定义触发词
     "clear_memory_commands": ["#清除记忆"],  # 重置会话指令，必须以#开头
     # channel配置
@@ -187,8 +189,8 @@ class Config(dict):
             d = {}
         for k, v in d.items():
             self[k] = v
-        # user_datas: 用户数据，key为用户名，value为用户数据，也是dict
-        self.user_datas = {}
+        # user_data: 用户数据，key为用户名，value为用户数据，也是dict
+        self.user_data = {}
 
     def __getitem__(self, key):
         if key not in available_setting:
@@ -210,28 +212,28 @@ class Config(dict):
 
     # Make sure to return a dictionary to ensure atomic
     def get_user_data(self, user) -> dict:
-        if self.user_datas.get(user) is None:
-            self.user_datas[user] = {}
-        return self.user_datas[user]
+        if self.user_data.get(user) is None:
+            self.user_data[user] = {}
+        return self.user_data[user]
 
-    def load_user_datas(self):
+    def load_user_data(self):
         try:
-            with open(os.path.join(get_appdata_dir(), "user_datas.pkl"), "rb") as f:
-                self.user_datas = pickle.load(f)
-                logger.info("[Config] User datas loaded.")
+            with open(os.path.join(get_appdata_dir(), "user_data.pkl"), "rb") as f:
+                self.user_data = pickle.load(f)
+                logger.info("[Config] User data loaded.")
         except FileNotFoundError as e:
-            logger.info("[Config] User datas file not found, ignore.")
+            logger.info("[Config] User data file not found, ignore.")
         except Exception as e:
-            logger.info("[Config] User datas error: {}".format(e))
-            self.user_datas = {}
+            logger.info("[Config] User data error: {}".format(e))
+            self.user_data = {}
 
-    def save_user_datas(self):
+    def save_user_data(self):
         try:
-            with open(os.path.join(get_appdata_dir(), "user_datas.pkl"), "wb") as f:
-                pickle.dump(self.user_datas, f)
-                logger.info("[Config] User datas saved.")
+            with open(os.path.join(get_appdata_dir(), "user_data.pkl"), "wb") as f:
+                pickle.dump(self.user_data, f)
+                logger.info("[Config] User data saved.")
         except Exception as e:
-            logger.info("[Config] User datas error: {}".format(e))
+            logger.info("[Config] User data error: {}".format(e))
 
 
 config = Config()
@@ -296,7 +298,7 @@ def load_config(config_path = "./config.json"):
 
     logger.info("[INIT] load config: {}".format(drag_sensitive(config)))
 
-    config.load_user_datas()
+    config.load_user_data()
 
 
 def get_root():

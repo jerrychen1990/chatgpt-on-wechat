@@ -9,7 +9,7 @@ import sys
 from common.log import logger
 from common.singleton import singleton
 from common.sorted_dict import SortedDict
-from config import conf, write_plugin_config
+from config import write_plugin_config
 
 from .event import *
 
@@ -60,6 +60,8 @@ class PluginManager:
         self.pconf = pconf
         if modified:
             self.save_config()
+
+        logger.info(f"{pconf=}")
         return pconf
 
     @staticmethod

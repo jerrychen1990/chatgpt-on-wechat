@@ -1,0 +1,34 @@
+{
+  "channel_type": "wx",
+  "aifori_url": "http://localhost:9001",
+  "aifori_assistant_id": "Aifori_wechat",
+  "clear_memory_commands": "清除记忆",
+  "bot_type": "aifori",
+  "hot_reload": true,
+  "open_ai_api_key": "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",
+  "text_to_image": "dall-e-2",
+  "voice_to_text": "aifori",
+  "text_to_voice": "aifori",
+  "proxy": "127.0.0.1:7890",
+  "single_chat_prefix": [
+    "Aifori",
+    "@Aifori",
+    ""
+  ],
+  "single_chat_reply_prefix": "[Aifori]",
+  "group_chat_prefix": [
+    "@Aifori"
+  ],
+  "group_name_white_list": [
+    "Aifori用户群"
+  ],
+  "image_create_prefix": [
+    "画"
+  ],
+  "speech_recognition": true,
+  "group_speech_recognition": false,
+  "voice_reply_voice": true,
+  "conversation_max_tokens": 2500,
+  "expires_in_seconds": 3600,
+  "temperature": 0.7
+}

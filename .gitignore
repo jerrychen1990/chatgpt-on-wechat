@@ -14,7 +14,7 @@ tmp
 plugins.json
 itchat.pkl
 *.log
-user_datas.pkl
+user_data.pkl
 chatgpt_tool_hub/
 plugins/**/
 !plugins/bdunit
@@ -31,3 +31,4 @@ plugins/banwords/lib/__pycache__
 !plugins/keyword
 !plugins/linkai
 client_config.json
+user_datas.pkl

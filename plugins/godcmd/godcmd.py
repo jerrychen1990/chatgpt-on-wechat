@@ -178,7 +178,7 @@ def get_help_text(isadmin, isgroup):
     version="1.0",
     author="lanvent",
 )
-class Godcmd(Plugin):
+class Docmd(Plugin):
     def __init__(self):
         super().__init__()
 
@@ -204,7 +204,7 @@ class Godcmd(Plugin):
         self.password = gconf["password"]
         self.admin_users = gconf["admin_users"]  # 预存的管理员账号，这些账号不需要认证。itchat的用户名每次都会变，不可用
         global_config["admin_users"] = self.admin_users
-        self.isrunning = True  # 机器人是否运行中
+        self.is_running = True  # 机器人是否运行中
 
         self.handlers[Event.ON_HANDLE_CONTEXT] = self.on_handle_context
         logger.info("[Godcmd] inited")
@@ -212,7 +212,7 @@ class Godcmd(Plugin):
     def on_handle_context(self, e_context: EventContext):
         context_type = e_context["context"].type
         if context_type != ContextType.TEXT:
-            if not self.isrunning:
+            if not self.is_running:
                 e_context.action = EventAction.BREAK_PASS
             return
 
@@ -329,10 +329,10 @@ class Godcmd(Plugin):
                     else:
                         cmd = next(c for c, info in ADMIN_COMMANDS.items() if cmd in info["alias"])
                         if cmd == "stop":
-                            self.isrunning = False
+                            self.is_running = False
                             ok, result = True, "服务已暂停"
                         elif cmd == "resume":
-                            self.isrunning = True
+                            self.is_running = True
                             ok, result = True, "服务已恢复"
                         elif cmd == "reconf":
                             load_config()
@@ -436,7 +436,7 @@ class Godcmd(Plugin):
             e_context["reply"] = reply
 
             e_context.action = EventAction.BREAK_PASS  # 事件结束，并跳过处理context的默认逻辑
-        elif not self.isrunning:
+        elif not self.is_running:
             e_context.action = EventAction.BREAK_PASS
 
     def authenticate(self, userid, args, isadmin, isgroup) -> Tuple[bool, str]:

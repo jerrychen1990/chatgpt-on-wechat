@@ -22,7 +22,7 @@ class AiforiBot(Bot):
 
     def __init__(self):
         super().__init__()
-        self.client = AiForiClient(host="https://aifori.fun/api")
+        self.client = AiForiClient(host=conf()["aifori_url"])
 
     def reply(self, query, context=None):
         # acquire reply content
@@ -34,28 +34,29 @@ class AiforiBot(Bot):
 
             session_id = context["session_id"]
             reply = None
-            clear_memory_commands = conf().get("clear_memory_commands", ["#清除记忆"])
+            clear_memory_commands = conf().get("clear_memory_commands", ["清除记忆"])
             if query in clear_memory_commands:
                 self.client.clear_session(session_id)
                 reply = Reply(ReplyType.INFO, "记忆已清除")
-            elif query == "#清除所有":
+            elif query == "清除所有":
                 self.client.clear_session(session_id)
                 reply = Reply(ReplyType.INFO, "所有人记忆已清除")
-            elif query == "#更新配置":
+            elif query == "更新配置":
                 load_config()
                 reply = Reply(ReplyType.INFO, "配置已更新")
             if reply:
                 return reply
             user_id = msg.other_user_id
-            self.client.get_or_create_user(user_id=user_id, name=msg.other_user_nickname, desc=msg.other_user_nickname)
-            req = ChatRequest(assistant_id="Aifori", user_id=user_id, session_id=session_id, message=query, do_remember=True)
+            user_info = self.client.get_or_create_user(user_id=user_id, name=msg.from_user_nickname, desc=msg.from_user_nickname)
+            logger.debug(f"user_info={user_info}")
+            req = ChatRequest(assistant_id=conf()["aifori_assistant_id"], user_id=user_id, session_id=session_id, message=query, do_remember=True, model="glm-4-0520")
 
             reply_content = self.client.chat(req, stream=False).content
 
             reply = Reply(ReplyType.TEXT, reply_content)
             return reply
         elif context.type == ContextType.IMAGE_CREATE:
-            ok, retstring = self.create_img(query, 0)
+            ok, ret = self.create_img(query, 0)
             reply = None
             return reply
         else:

@@ -5,6 +5,8 @@ import signal
 import sys
 import time
 
+from dotenv import load_dotenv
+
 from channel import channel_factory
 from common import const
 from config import load_config
@@ -17,7 +19,7 @@ def sigterm_handler_wrap(_signo):
 
     def func(_signo, _stack_frame):
         logger.info("signal {} received, exiting...".format(_signo))
-        conf().save_user_datas()
+        conf().save_user_data()
         if callable(old_handler):  #  check old_handler
             return old_handler(_signo, _stack_frame)
         sys.exit(0)
@@ -40,10 +42,20 @@ def start_channel(channel_name: str):
     channel.startup()
 
 
+def load_aifori():
+    load_dotenv()
+    path = sys.path
+    aifori_path = os.environ["AIFORI_CODE_HOME"]
+    if aifori_path not in path:
+        sys.path.insert(0, aifori_path)
+        logger.info(f"{sys.path=}")
+
+
 def run():
     try:
         # load config
         config_path = sys.argv[1]
+        load_aifori()
         load_config(config_path)
         # ctrl + c
         sigterm_handler_wrap(signal.SIGINT)
