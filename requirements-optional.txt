@@ -20,7 +20,7 @@ web.py
 wechatpy
 
 # chatgpt-tool-hub plugin
-chatgpt_tool_hub==0.5.0
+# chatgpt_tool_hub==0.5.0
 
 # xunfei spark
 websocket-client==1.2.0
@@ -44,3 +44,8 @@ zhipuai>=2.0.1
 
 # tongyi qwen new sdk
 dashscope
+
+
+# aifori
+liteai
+python-snippets
