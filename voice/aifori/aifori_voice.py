@@ -89,6 +89,7 @@ class AiforiVoice(Voice):
         :return: 返回一个Reply对象，其中包含转换得到的文本或错误信息。
         """
         logger.info(f"Aifori doing asr:{voice_file}")
+        # Aifori还不支持ASR，暂时返回固定文本
         text= "你好呀"
         return Reply(ReplyType.TEXT, text)
         # return Reply(ReplyType.ERROR, "抱歉，Aifori暂不支持语音识别")
