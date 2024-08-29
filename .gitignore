@@ -32,3 +32,4 @@ plugins/banwords/lib/__pycache__
 !plugins/linkai
 client_config.json
 user_datas.pkl
+.env
