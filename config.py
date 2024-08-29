@@ -1,7 +1,6 @@
 # encoding:utf-8
 
 import json
-import logging
 import os
 import pickle
 import copy
@@ -13,9 +12,7 @@ from common.log import logger
 available_setting = {
     # openai api配置
     "open_ai_api_key": "",  # openai api key
-    "aifori_url": "http://127.0.0.1:9001", # Aifori服务地址
-    "aifori_assistant_id": "Aifori_wechat", # Aifori助手ID
-    # openai apibase，当use_azure_chatgpt为true时，需要设置对应的api base
+    # openai api base，当use_azure_chatgpt为true时，需要设置对应的api base
     "open_ai_api_base": "https://api.openai.com/v1",
     "proxy": "",  # openai使用的代理
     # chatgpt模型， 当use_azure_chatgpt为true时，其名称为Azure上model deployment名称
@@ -132,7 +129,7 @@ available_setting = {
     "wechatmp_token": "",  # 微信公众平台的Token
     "wechatmp_port": 8080,  # 微信公众平台的端口,需要端口转发到80或443
     "wechatmp_app_id": "",  # 微信公众平台的appID
-    "wechatmp_app_secret": "",  # 微信公众平台的appsecret
+    "wechatmp_app_secret": "",  # 微信公众平台的app secret
     "wechatmp_aes_key": "",  # 微信公众平台的EncodingAESKey，加密模式需要
     # wechatcom的通用配置
     "wechatcom_corp_id": "",  # 企业微信公司的corpID
@@ -179,6 +176,9 @@ available_setting = {
     "Minimax_api_key": "",
     "Minimax_group_id": "",
     "Minimax_base_url": "",
+    # Aifori配置
+    "aifori_url": "http://127.0.0.1:9001", # Aifori服务地址
+    "aifori_assistant_id": "Aifori_wechat", # Aifori助手ID
 }
 
 
@@ -269,7 +269,7 @@ def load_config(config_path = "./config.json"):
     if not os.path.exists(config_path):
         logger.info("配置文件不存在，将使用config-template.json模板")
         config_path = "./config-template.json"
-
+    logger.info(f"loading config from {config_path}")
     config_str = read_file(config_path)
     logger.debug("[INIT] config str: {}".format(drag_sensitive(config_str)))
 
@@ -291,11 +291,6 @@ def load_config(config_path = "./config.json"):
                     config[name] = True
                 else:
                     config[name] = value
-
-    if config.get("debug", False):
-        logger.setLevel(logging.DEBUG)
-        logger.debug("[INIT] set log level to DEBUG")
-
     logger.info("[INIT] load config: {}".format(drag_sensitive(config)))
 
     config.load_user_data()

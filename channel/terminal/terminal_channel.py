@@ -27,7 +27,7 @@ class TerminalMessage(ChatMessage):
 
 
 class TerminalChannel(ChatChannel):
-    NOT_SUPPORT_REPLYTYPE = [ReplyType.VOICE]
+    NOT_SUPPORT_REPLY_TYPE = [ReplyType.VOICE]
 
     def send(self, reply: Reply, context: Context):
         print("\nBot:")

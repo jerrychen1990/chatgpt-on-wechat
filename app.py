@@ -13,21 +13,24 @@ from config import load_config
 from plugins import *
 import threading
 
+from snippets.logs import set_logger
 
-def sigterm_handler_wrap(_signo):
-    old_handler = signal.getsignal(_signo)
 
-    def func(_signo, _stack_frame):
-        logger.info("signal {} received, exiting...".format(_signo))
+def sigterm_handler_wrap(_signal):
+    old_handler = signal.getsignal(_signal)
+
+    def func(_sig, _stack_frame):
+        logger.info("signal {} received, exiting...".format(_sig))
         conf().save_user_data()
         if callable(old_handler):  #  check old_handler
-            return old_handler(_signo, _stack_frame)
+            return old_handler(_sig, _stack_frame)
         sys.exit(0)
 
-    signal.signal(_signo, func)
+    signal.signal(_signal, func)
 
 
 def start_channel(channel_name: str):
+    logger.info(f"starting channel {channel_name}")
     channel = channel_factory.create_channel(channel_name)
     if channel_name in ["wx", "wxy", "terminal", "wechatmp", "wechatmp_service", "wechatcom_app", "wework",
                         const.FEISHU, const.DINGTALK]:
@@ -54,6 +57,8 @@ def load_aifori():
 def run():
     try:
         # load config
+        print("start")
+        logger.info("start")
         config_path = sys.argv[1]
         load_aifori()
         load_config(config_path)
@@ -69,7 +74,7 @@ def run():
             channel_name = "terminal"
 
         if channel_name == "wxy":
-            os.environ["WECHATY_LOG"] = "warn"
+            os.environ["WECHATY_LOG"] = "info"
 
         start_channel(channel_name)
 
@@ -81,4 +86,5 @@ def run():
 
 
 if __name__ == "__main__":
+    set_logger("dev", __name__)
     run()

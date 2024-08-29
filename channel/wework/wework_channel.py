@@ -120,7 +120,7 @@ def _check(func):
 
 
 @wework.msg_register(
-    [ntwork.MT_RECV_TEXT_MSG, ntwork.MT_RECV_IMAGE_MSG, 11072, ntwork.MT_RECV_LINK_CARD_MSG,ntwork.MT_RECV_FILE_MSG, ntwork.MT_RECV_VOICE_MSG])
+    [ntwork.MT_RECV_TEXT_MSG, ntwork.MT_RECV_IMAGE_MSG, 11072, ntwork.MT_RECV_LINK_CARD_MSG, ntwork.MT_RECV_FILE_MSG, ntwork.MT_RECV_VOICE_MSG])
 def all_msg_handler(wework_instance: ntwork.WeWork, message):
     logger.debug(f"收到消息: {message}")
     if 'data' in message:
@@ -174,7 +174,7 @@ def get_with_retry(get_func, max_retries=5, delay=5):
 
 @singleton
 class WeworkChannel(ChatChannel):
-    NOT_SUPPORT_REPLYTYPE = []
+    NOT_SUPPORT_REPLY_TYPE = []
 
     def __init__(self):
         super().__init__()

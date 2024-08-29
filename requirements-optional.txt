@@ -30,8 +30,7 @@ curl_cffi
 # claude API
 anthropic
 
-# tongyi qwen
-broadscope_bailian
+
 
 # google
 google-generativeai
@@ -39,12 +38,8 @@ google-generativeai
 # dingtalk
 dingtalk_stream
 
-# zhipuai
-zhipuai>=2.0.1
 
-# tongyi qwen new sdk
-dashscope
-
+# wechaty
 
 # aifori
 liteai

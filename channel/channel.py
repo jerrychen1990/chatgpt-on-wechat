@@ -1,6 +1,7 @@
 """
 Message sending channel abstract class
 """
+from loguru import logger
 
 from bridge.bridge import Bridge
 from bridge.context import Context
@@ -9,7 +10,7 @@ from bridge.reply import *
 
 class Channel(object):
     channel_type = ""
-    NOT_SUPPORT_REPLYTYPE = [ReplyType.VOICE, ReplyType.IMAGE]
+    NOT_SUPPORT_REPLY_TYPE = [ReplyType.VOICE, ReplyType.IMAGE]
 
     def startup(self):
         """
@@ -41,4 +42,5 @@ class Channel(object):
         return Bridge().fetch_voice_to_text(voice_file)
 
     def build_text_to_voice(self, text) -> Reply:
+        logger.info(f"build_text_to_voice: {text}")
         return Bridge().fetch_text_to_voice(text)

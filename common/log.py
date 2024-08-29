@@ -1,38 +1,45 @@
-import logging
-import sys
+from loguru import logger as logger
+from snippets import set_logger
 
 
-def _reset_logger(log):
-    for handler in log.handlers:
-        handler.close()
-        log.removeHandler(handler)
-        del handler
-    log.handlers.clear()
-    log.propagate = False
-    console_handle = logging.StreamHandler(sys.stdout)
-    console_handle.setFormatter(
-        logging.Formatter(
-            "[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d] - %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
-    )
-    file_handle = logging.FileHandler("run.log", encoding="utf-8")
-    file_handle.setFormatter(
-        logging.Formatter(
-            "[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d] - %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
-    )
-    log.addHandler(file_handle)
-    log.addHandler(console_handle)
+set_logger("DEV", "bot")
+set_logger("DEV", "bridge")
+set_logger("DEV", "channel")
+set_logger("DEV", "common")
+set_logger("DEV", "voice")
 
 
-def _get_logger():
-    log = logging.getLogger("log")
-    _reset_logger(log)
-    log.setLevel(logging.INFO)
-    return log
+# def _reset_logger(log):
+#     for handler in log.handlers:
+#         handler.close()
+#         log.removeHandler(handler)
+#         del handler
+#     log.handlers.clear()
+#     log.propagate = False
+#     console_handle = logging.StreamHandler(sys.stdout)
+#     console_handle.setFormatter(
+#         logging.Formatter(
+#             "[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d] - %(message)s",
+#             datefmt="%Y-%m-%d %H:%M:%S",
+#         )
+#     )
+#     file_handle = logging.FileHandler("run.log", encoding="utf-8")
+#     file_handle.setFormatter(
+#         logging.Formatter(
+#             "[%(levelname)s][%(asctime)s][%(filename)s:%(lineno)d] - %(message)s",
+#             datefmt="%Y-%m-%d %H:%M:%S",
+#         )
+#     )
+#     log.addHandler(file_handle)
+#     log.addHandler(console_handle)
 
 
-# 日志句柄
-logger = _get_logger()
+# def _get_logger():
+#     log = logging.getLogger("log")
+#     _reset_logger(log)
+#     log.setLevel(logging.INFO)
+#     return log
+
+
+# # 日志句柄
+# logger = _get_logger()

@@ -26,11 +26,11 @@ class AiforiBot(Bot):
 
     def reply(self, query, context=None):
         # acquire reply content
+        logger.info(f"Aifori bot get {query=}, {str(context)=}")
+
         if context.type == ContextType.TEXT:
-            logger.info(f"context={str(context)}")
-            logger.info("[Aifori] query={}".format(query))
             msg: WechatMessage = context.kwargs["msg"]
-            logger.info(f"msg = {str(msg)}")
+            logger.info(f"wechat message:{str(msg)}")
 
             session_id = context["session_id"]
             reply = None

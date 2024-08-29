@@ -105,7 +105,7 @@ def qrCallback(uuid, status, qrcode):
 
 @singleton
 class WechatChannel(ChatChannel):
-    NOT_SUPPORT_REPLYTYPE = []
+    NOT_SUPPORT_REPLY_TYPE = []
 
     def __init__(self):
         super().__init__()

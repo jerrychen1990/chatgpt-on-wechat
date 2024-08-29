@@ -36,7 +36,7 @@ class WechatMPChannel(ChatChannel):
     def __init__(self, passive_reply=True):
         super().__init__()
         self.passive_reply = passive_reply
-        self.NOT_SUPPORT_REPLYTYPE = []
+        self.NOT_SUPPORT_REPLY_TYPE = []
         appid = conf().get("wechatmp_app_id")
         secret = conf().get("wechatmp_app_secret")
         token = conf().get("wechatmp_token")

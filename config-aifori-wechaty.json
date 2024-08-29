@@ -1,5 +1,5 @@
 {
-  "channel_type": "wx",
+  "channel_type": "wxy",
   "aifori_url": "http://localhost:9001",
   "aifori_assistant_id": "Aifori_wechat",
   "clear_memory_commands": "清除记忆",
@@ -7,7 +7,6 @@
   "hot_reload": true,
   "voice_to_text": "aifori",
   "text_to_voice": "aifori",
-  "proxy": "127.0.0.1:7890",
   "single_chat_prefix": [
     "Aifori",
     "@Aifori",
@@ -28,5 +27,6 @@
   "voice_reply_voice": true,
   "conversation_max_tokens": 2500,
   "expires_in_seconds": 3600,
-  "temperature": 0.7
+  "temperature": 0.7,
+  "debug": true
 }
