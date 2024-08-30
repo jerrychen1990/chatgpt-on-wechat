@@ -41,7 +41,7 @@ class Keyword(Plugin):
             self.handlers[Event.ON_HANDLE_CONTEXT] = self.on_handle_context
             logger.info("[keyword] inited.")
         except Exception as e:
-            logger.warn("[keyword] init failed, ignore or see https://github.com/zhayujie/chatgpt-on-wechat/tree/master/plugins/keyword .")
+            logger.warning("[keyword] init failed, ignore or see https://github.com/zhayujie/chatgpt-on-wechat/tree/master/plugins/keyword .")
             raise e
 
     def on_handle_context(self, e_context: EventContext):
@@ -60,8 +60,8 @@ class Keyword(Plugin):
                 reply = Reply()
                 reply.type = ReplyType.IMAGE_URL
                 reply.content = reply_text
-                
-            elif (reply_text.startswith("http://") or reply_text.startswith("https://")) and any(reply_text.endswith(ext) for ext in [".pdf", ".doc", ".docx", ".xls", "xlsx",".zip", ".rar"]):
+
+            elif (reply_text.startswith("http://") or reply_text.startswith("https://")) and any(reply_text.endswith(ext) for ext in [".pdf", ".doc", ".docx", ".xls", "xlsx", ".zip", ".rar"]):
             # 如果是以 http:// 或 https:// 开头，且".pdf", ".doc", ".docx", ".xls", "xlsx",".zip", ".rar"结尾，则下载文件到tmp目录并发送给用户
                 file_path = "tmp"
                 if not os.path.exists(file_path):
@@ -75,22 +75,22 @@ class Keyword(Plugin):
                 reply = Reply()
                 reply.type = ReplyType.FILE
                 reply.content = file_path
-            
+
             elif (reply_text.startswith("http://") or reply_text.startswith("https://")) and any(reply_text.endswith(ext) for ext in [".mp4"]):
             # 如果是以 http:// 或 https:// 开头，且".mp4"结尾，则下载视频到tmp目录并发送给用户
                 reply = Reply()
                 reply.type = ReplyType.VIDEO_URL
                 reply.content = reply_text
-                
+
             else:
             # 否则认为是普通文本
                 reply = Reply()
                 reply.type = ReplyType.TEXT
                 reply.content = reply_text
-            
+
             e_context["reply"] = reply
             e_context.action = EventAction.BREAK_PASS  # 事件结束，并跳过处理context的默认逻辑
-            
+
     def get_help_text(self, **kwargs):
         help_text = "关键词过滤"
         return help_text

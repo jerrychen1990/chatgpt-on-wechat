@@ -10,13 +10,15 @@ from ..storage import templates
 
 logger = logging.getLogger('itchat')
 
+
 def load_register(core):
     core.auto_login       = auto_login
     core.configured_reply = configured_reply
     core.msg_register     = msg_register
     core.run              = run
 
-async def auto_login(self, EventScanPayload=None,ScanStatus=None,event_stream=None,
+
+async def auto_login(self, EventScanPayload=None, ScanStatus=None, event_stream=None,
         hotReload=True, statusStorageDir='itchat.pkl',
         enableCmdQR=False, picDir=None, qrCallback=None,
         loginCallback=None, exitCallback=None):
@@ -35,6 +37,7 @@ async def auto_login(self, EventScanPayload=None,ScanStatus=None,event_stream=No
     else:
         await self.login(enableCmdQR=enableCmdQR, picDir=picDir, qrCallback=qrCallback, EventScanPayload=EventScanPayload, ScanStatus=ScanStatus, event_stream=event_stream,
             loginCallback=loginCallback, exitCallback=exitCallback)
+
 
 async def configured_reply(self, event_stream, payload, message_container):
     ''' determine the type of message and reply if its method is defined
@@ -64,7 +67,8 @@ async def configured_reply(self, event_stream, payload, message_container):
                 if r is not None:
                     await self.send(r, msg.get('FromUserName'))
             except:
-                logger.warning(traceback.format_exc())
+                logger.warninging(traceback.format_exc())
+
 
 def msg_register(self, msgType, isFriendChat=False, isGroupChat=False, isMpChat=False):
     ''' a decorator constructor
@@ -83,6 +87,7 @@ def msg_register(self, msgType, isFriendChat=False, isGroupChat=False, isMpChat=
                 self.functionDict['FriendChat'][_msgType] = fn
         return fn
     return _msg_register
+
 
 async def run(self, debug=False, blockThread=True):
     logger.info('Start auto replying.')

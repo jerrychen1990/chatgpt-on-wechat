@@ -30,7 +30,7 @@ class GoogleGeminiBot(Bot):
     def reply(self, query, context: Context = None) -> Reply:
         try:
             if context.type != ContextType.TEXT:
-                logger.warn(f"[Gemini] Unsupported message type, type={context.type}")
+                logger.warning(f"[Gemini] Unsupported message type, type={context.type}")
                 return Reply(ReplyType.TEXT, None)
             logger.info(f"[Gemini] query={query}")
             session_id = context["session_id"]

@@ -118,22 +118,22 @@ class ZHIPUAIBot(Bot, ZhipuAIImage):
             need_retry = retry_count < 2
             result = {"completion_tokens": 0, "content": "我现在有点累了，等会再来吧"}
             if isinstance(e, openai._exceptions.RateLimitError):
-                logger.warn("[ZHIPU_AI] RateLimitError: {}".format(e))
+                logger.warning("[ZHIPU_AI] RateLimitError: {}".format(e))
                 result["content"] = "提问太快啦，请休息一下再问我吧"
                 if need_retry:
                     time.sleep(20)
             elif isinstance(e, openai._exceptions.Timeout):
-                logger.warn("[ZHIPU_AI] Timeout: {}".format(e))
+                logger.warning("[ZHIPU_AI] Timeout: {}".format(e))
                 result["content"] = "我没有收到你的消息"
                 if need_retry:
                     time.sleep(5)
             elif isinstance(e, openai._exceptions.APIError):
-                logger.warn("[ZHIPU_AI] Bad Gateway: {}".format(e))
+                logger.warning("[ZHIPU_AI] Bad Gateway: {}".format(e))
                 result["content"] = "请再问我一次"
                 if need_retry:
                     time.sleep(10)
             elif isinstance(e, openai._exceptions.APIConnectionError):
-                logger.warn("[ZHIPU_AI] APIConnectionError: {}".format(e))
+                logger.warning("[ZHIPU_AI] APIConnectionError: {}".format(e))
                 result["content"] = "我连接不到你的网络"
                 if need_retry:
                     time.sleep(5)
@@ -143,7 +143,7 @@ class ZHIPUAIBot(Bot, ZhipuAIImage):
                 self.sessions.clear_session(session.session_id)
 
             if need_retry:
-                logger.warn("[ZHIPU_AI] 第{}次重试".format(retry_count + 1))
+                logger.warning("[ZHIPU_AI] 第{}次重试".format(retry_count + 1))
                 return self.reply_text(session, api_key, args, retry_count + 1)
             else:
                 return result

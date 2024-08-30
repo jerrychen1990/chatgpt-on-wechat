@@ -38,7 +38,7 @@ class ChatGPTSession(Session):
                     cur_tokens = cur_tokens - max_tokens
                 break
             elif len(self.messages) == 2 and self.messages[1]["role"] == "user":
-                logger.warn("user message exceed max_tokens. total_tokens={}".format(cur_tokens))
+                logger.warning("user message exceed max_tokens. total_tokens={}".format(cur_tokens))
                 break
             else:
                 logger.debug("max_tokens={}, total_tokens={}, len(messages)={}".format(max_tokens, cur_tokens, len(self.messages)))
@@ -83,7 +83,7 @@ def num_tokens_from_messages(messages, model):
         tokens_per_message = 3
         tokens_per_name = 1
     else:
-        logger.warn(f"num_tokens_from_messages() is not implemented for model {model}. Returning num tokens assuming gpt-3.5-turbo.")
+        logger.warning(f"num_tokens_from_messages() is not implemented for model {model}. Returning num tokens assuming gpt-3.5-turbo.")
         return num_tokens_from_messages(messages, model="gpt-3.5-turbo")
     num_tokens = 0
     for message in messages:

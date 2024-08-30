@@ -11,6 +11,7 @@ from common.log import logger
     ]
 """
 
+
 class AliQwenSession(Session):
     def __init__(self, session_id, system_prompt=None, model="qianwen"):
         super().__init__(session_id, system_prompt)
@@ -37,7 +38,7 @@ class AliQwenSession(Session):
                     cur_tokens = cur_tokens - max_tokens
                 break
             elif len(self.messages) == 2 and self.messages[1]["role"] == "user":
-                logger.warn("user message exceed max_tokens. total_tokens={}".format(cur_tokens))
+                logger.warning("user message exceed max_tokens. total_tokens={}".format(cur_tokens))
                 break
             else:
                 logger.debug("max_tokens={}, total_tokens={}, len(messages)={}".format(max_tokens, cur_tokens, len(self.messages)))
@@ -50,6 +51,7 @@ class AliQwenSession(Session):
 
     def calc_tokens(self):
         return num_tokens_from_messages(self.messages, self.model)
+
 
 def num_tokens_from_messages(messages, model):
     """Returns the number of tokens used by a list of messages."""

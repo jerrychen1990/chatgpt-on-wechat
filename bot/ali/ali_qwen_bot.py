@@ -18,6 +18,7 @@ from common.log import logger
 from common import const
 from config import conf, load_config
 
+
 class AliQwenBot(Bot):
     def __init__(self):
         super().__init__()
@@ -116,22 +117,22 @@ class AliQwenBot(Bot):
             need_retry = retry_count < 2
             result = {"completion_tokens": 0, "content": "我现在有点累了，等会再来吧"}
             if isinstance(e, openai.error.RateLimitError):
-                logger.warn("[QWEN] RateLimitError: {}".format(e))
+                logger.warning("[QWEN] RateLimitError: {}".format(e))
                 result["content"] = "提问太快啦，请休息一下再问我吧"
                 if need_retry:
                     time.sleep(20)
             elif isinstance(e, openai.error.Timeout):
-                logger.warn("[QWEN] Timeout: {}".format(e))
+                logger.warning("[QWEN] Timeout: {}".format(e))
                 result["content"] = "我没有收到你的消息"
                 if need_retry:
                     time.sleep(5)
             elif isinstance(e, openai.error.APIError):
-                logger.warn("[QWEN] Bad Gateway: {}".format(e))
+                logger.warning("[QWEN] Bad Gateway: {}".format(e))
                 result["content"] = "请再问我一次"
                 if need_retry:
                     time.sleep(10)
             elif isinstance(e, openai.error.APIConnectionError):
-                logger.warn("[QWEN] APIConnectionError: {}".format(e))
+                logger.warning("[QWEN] APIConnectionError: {}".format(e))
                 need_retry = False
                 result["content"] = "我连接不到你的网络"
             else:
@@ -140,7 +141,7 @@ class AliQwenBot(Bot):
                 self.sessions.clear_session(session.session_id)
 
             if need_retry:
-                logger.warn("[QWEN] 第{}次重试".format(retry_count + 1))
+                logger.warning("[QWEN] 第{}次重试".format(retry_count + 1))
                 return self.reply_text(session, retry_count + 1)
             else:
                 return result

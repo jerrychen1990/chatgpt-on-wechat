@@ -17,6 +17,7 @@ from common import memory, utils
 import base64
 import os
 
+
 class LinkAIBot(Bot):
     # authentication failed
     AUTH_FAILED_CODE = 401
@@ -32,7 +33,7 @@ class LinkAIBot(Bot):
             return self._chat(query, context)
         elif context.type == ContextType.IMAGE_CREATE:
             if not conf().get("text_to_image"):
-                logger.warn("[LinkAI] text_to_image is not enabled, ignore the IMAGE_CREATE request")
+                logger.warning("[LinkAI] text_to_image is not enabled, ignore the IMAGE_CREATE request")
                 return Reply(ReplyType.TEXT, "")
             ok, res = self.create_img(query, 0)
             if ok:
@@ -54,7 +55,7 @@ class LinkAIBot(Bot):
         """
         if retry_count > 2:
             # exit from retry 2 times
-            logger.warn("[LINKAI] failed after maximum number of retry times")
+            logger.warning("[LINKAI] failed after maximum number of retry times")
             return Reply(ReplyType.TEXT, "请再问我一次吧")
 
         try:
@@ -133,7 +134,7 @@ class LinkAIBot(Bot):
                 res_code = response.get('code')
                 logger.info(f"[LINKAI] reply={reply_content}, total_tokens={total_tokens}, res_code={res_code}")
                 if res_code == 429:
-                    logger.warn(f"[LINKAI] 用户访问超出限流配置，sender_id={body.get('sender_id')}")
+                    logger.warning(f"[LINKAI] 用户访问超出限流配置，sender_id={body.get('sender_id')}")
                 else:
                     self.sessions.session_reply(reply_content, session_id, total_tokens, query=query)
                 agent_suffix = self._fetch_agent_suffix(response)
@@ -161,7 +162,7 @@ class LinkAIBot(Bot):
                 if res.status_code >= 500:
                     # server error, need retry
                     time.sleep(2)
-                    logger.warn(f"[LINKAI] do retry, times={retry_count}")
+                    logger.warning(f"[LINKAI] do retry, times={retry_count}")
                     return self._chat(query, context, retry_count + 1)
 
                 error_reply = "提问太快啦，请休息一下再问我吧"
@@ -173,10 +174,10 @@ class LinkAIBot(Bot):
             logger.exception(e)
             # retry
             time.sleep(2)
-            logger.warn(f"[LINKAI] do retry, times={retry_count}")
+            logger.warning(f"[LINKAI] do retry, times={retry_count}")
             return self._chat(query, context, retry_count + 1)
 
-    def _process_image_msg(self, app_code: str, session_id: str, query:str, img_cache: dict):
+    def _process_image_msg(self, app_code: str, session_id: str, query: str, img_cache: dict):
         try:
             enable_image_input = False
             app_info = self._fetch_app_info(app_code)
@@ -239,7 +240,7 @@ class LinkAIBot(Bot):
     def reply_text(self, session: ChatGPTSession, app_code="", retry_count=0) -> dict:
         if retry_count >= 2:
             # exit from retry 2 times
-            logger.warn("[LINKAI] failed after maximum number of retry times")
+            logger.warning("[LINKAI] failed after maximum number of retry times")
             return {
                 "total_tokens": 0,
                 "completion_tokens": 0,
@@ -285,7 +286,7 @@ class LinkAIBot(Bot):
                 if res.status_code >= 500:
                     # server error, need retry
                     time.sleep(2)
-                    logger.warn(f"[LINKAI] do retry, times={retry_count}")
+                    logger.warning(f"[LINKAI] do retry, times={retry_count}")
                     return self.reply_text(session, app_code, retry_count + 1)
 
                 return {
@@ -298,7 +299,7 @@ class LinkAIBot(Bot):
             logger.exception(e)
             # retry
             time.sleep(2)
-            logger.warn(f"[LINKAI] do retry, times={retry_count}")
+            logger.warning(f"[LINKAI] do retry, times={retry_count}")
             return self.reply_text(session, app_code, retry_count + 1)
 
     def _fetch_app_info(self, app_code: str):
@@ -310,7 +311,7 @@ class LinkAIBot(Bot):
         if res.status_code == 200:
             return res.json()
         else:
-            logger.warning(f"[LinkAI] find app info exception, res={res}")
+            logger.warninging(f"[LinkAI] find app info exception, res={res}")
 
     def create_img(self, query, retry_count=0, api_key=None):
         try:
@@ -337,7 +338,6 @@ class LinkAIBot(Bot):
             logger.error(format(e))
             return False, "画图出现问题，请休息一下再问我吧"
 
-
     def _fetch_knowledge_search_suffix(self, response) -> str:
         try:
             if response.get("knowledge_base"):
@@ -354,7 +354,6 @@ class LinkAIBot(Bot):
                         return search_miss_text
         except Exception as e:
             logger.exception(e)
-
 
     def _fetch_agent_suffix(self, response):
         try:
@@ -435,7 +434,7 @@ def _download_file(url: str):
             f.write(response.content)
         return file_path
     except Exception as e:
-        logger.warn(e)
+        logger.warning(e)
 
 
 class LinkAISessionManager(SessionManager):
@@ -454,7 +453,7 @@ class LinkAISessionManager(SessionManager):
             tokens_cnt = session.discard_exceeding(max_tokens, total_tokens)
             logger.debug(f"[LinkAI] chat history, before tokens={total_tokens}, now tokens={tokens_cnt}")
         except Exception as e:
-            logger.warning("Exception when counting tokens precisely for session: {}".format(str(e)))
+            logger.warninging("Exception when counting tokens precisely for session: {}".format(str(e)))
         return session
 
 

@@ -132,22 +132,22 @@ class ChatGPTBot(Bot, OpenAIImage):
             need_retry = retry_count < 2
             result = {"completion_tokens": 0, "content": "我现在有点累了，等会再来吧"}
             if isinstance(e, openai.error.RateLimitError):
-                logger.warn("[CHATGPT] RateLimitError: {}".format(e))
+                logger.warning("[CHATGPT] RateLimitError: {}".format(e))
                 result["content"] = "提问太快啦，请休息一下再问我吧"
                 if need_retry:
                     time.sleep(20)
             elif isinstance(e, openai.error.Timeout):
-                logger.warn("[CHATGPT] Timeout: {}".format(e))
+                logger.warning("[CHATGPT] Timeout: {}".format(e))
                 result["content"] = "我没有收到你的消息"
                 if need_retry:
                     time.sleep(5)
             elif isinstance(e, openai.error.APIError):
-                logger.warn("[CHATGPT] Bad Gateway: {}".format(e))
+                logger.warning("[CHATGPT] Bad Gateway: {}".format(e))
                 result["content"] = "请再问我一次"
                 if need_retry:
                     time.sleep(10)
             elif isinstance(e, openai.error.APIConnectionError):
-                logger.warn("[CHATGPT] APIConnectionError: {}".format(e))
+                logger.warning("[CHATGPT] APIConnectionError: {}".format(e))
                 result["content"] = "我连接不到你的网络"
                 if need_retry:
                     time.sleep(5)
@@ -157,7 +157,7 @@ class ChatGPTBot(Bot, OpenAIImage):
                 self.sessions.clear_session(session.session_id)
 
             if need_retry:
-                logger.warn("[CHATGPT] 第{}次重试".format(retry_count + 1))
+                logger.warning("[CHATGPT] 第{}次重试".format(retry_count + 1))
                 return self.reply_text(session, api_key, args, retry_count + 1)
             else:
                 return result
@@ -174,15 +174,15 @@ class AzureChatGPTBot(ChatGPTBot):
         text_to_image_model = conf().get("text_to_image")
         if text_to_image_model == "dall-e-2":
             api_version = "2023-06-01-preview"
-            endpoint = conf().get("azure_openai_dalle_api_base","open_ai_api_base")
+            endpoint = conf().get("azure_openai_dalle_api_base", "open_ai_api_base")
             # 检查endpoint是否以/结尾
             if not endpoint.endswith("/"):
                 endpoint = endpoint + "/"
             url = "{}openai/images/generations:submit?api-version={}".format(endpoint, api_version)
-            api_key = conf().get("azure_openai_dalle_api_key","open_ai_api_key")
+            api_key = conf().get("azure_openai_dalle_api_key", "open_ai_api_key")
             headers = {"api-key": api_key, "Content-Type": "application/json"}
             try:
-                body = {"prompt": query, "size": conf().get("image_create_size", "256x256"),"n": 1}
+                body = {"prompt": query, "size": conf().get("image_create_size", "256x256"), "n": 1}
                 submission = requests.post(url, headers=headers, json=body)
                 operation_location = submission.headers['operation-location']
                 status = ""
@@ -199,12 +199,12 @@ class AzureChatGPTBot(ChatGPTBot):
                 return False, "图片生成失败"
         elif text_to_image_model == "dall-e-3":
             api_version = conf().get("azure_api_version", "2024-02-15-preview")
-            endpoint = conf().get("azure_openai_dalle_api_base","open_ai_api_base")
+            endpoint = conf().get("azure_openai_dalle_api_base", "open_ai_api_base")
             # 检查endpoint是否以/结尾
             if not endpoint.endswith("/"):
                 endpoint = endpoint + "/"
-            url = "{}openai/deployments/{}/images/generations?api-version={}".format(endpoint, conf().get("azure_openai_dalle_deployment_id","text_to_image"),api_version)
-            api_key = conf().get("azure_openai_dalle_api_key","open_ai_api_key")
+            url = "{}openai/deployments/{}/images/generations?api-version={}".format(endpoint, conf().get("azure_openai_dalle_deployment_id", "text_to_image"), api_version)
+            api_key = conf().get("azure_openai_dalle_api_key", "open_ai_api_key")
             headers = {"api-key": api_key, "Content-Type": "application/json"}
             try:
                 body = {"prompt": query, "size": conf().get("image_create_size", "1024x1024"), "quality": conf().get("dalle3_image_quality", "standard")}

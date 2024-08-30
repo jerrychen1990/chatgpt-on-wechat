@@ -49,7 +49,7 @@ class XunfeiVoice(Voice):
             self.BusinessArgsASR= conf.get("BusinessArgsASR")
 
         except Exception as e:
-            logger.warn("XunfeiVoice init failed: %s, ignore " % e)
+            logger.warning("XunfeiVoice init failed: %s, ignore " % e)
 
     def voiceToText(self, voice_file):
         # 识别本地文件
@@ -65,11 +65,11 @@ class XunfeiVoice(Voice):
             #shutil.copy2(voice_file, 'tmp/test1.wav')
             #shutil.copy2(mp3_file, 'tmp/test1.mp3')
             #print("voice and mp3 file",voice_file,mp3_file)
-            text = xunfei_asr(self.APPID,self.APISecret,self.APIKey,self.BusinessArgsASR,voice_file)
+            text = xunfei_asr(self.APPID, self.APISecret, self.APIKey, self.BusinessArgsASR, voice_file)
             logger.info("讯飞语音识别到了: {}".format(text))
             reply = Reply(ReplyType.TEXT, text)
         except Exception as e:
-            logger.warn("XunfeiVoice init failed: %s, ignore " % e)
+            logger.warning("XunfeiVoice init failed: %s, ignore " % e)
             reply = Reply(ReplyType.ERROR, "讯飞语音识别出错了；{0}")
         return reply
 
@@ -77,7 +77,7 @@ class XunfeiVoice(Voice):
         try:
             # Avoid the same filename under multithreading
             fileName = TmpDir().path() + "reply-" + str(int(time.time())) + "-" + str(hash(text) & 0x7FFFFFFF) + ".mp3"
-            return_file = xunfei_tts(self.APPID,self.APIKey,self.APISecret,self.BusinessArgsTTS,text,fileName)
+            return_file = xunfei_tts(self.APPID, self.APIKey, self.APISecret, self.BusinessArgsTTS, text, fileName)
             logger.info("[Xunfei] textToVoice text={} voice file name={}".format(text, fileName))
             reply = Reply(ReplyType.VOICE, fileName)
         except Exception as e:

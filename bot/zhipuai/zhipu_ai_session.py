@@ -8,7 +8,7 @@ class ZhipuAISession(Session):
         self.model = model
         self.reset()
         if not system_prompt:
-            logger.warn("[ZhiPu] `character_desc` can not be empty")
+            logger.warning("[ZhiPu] `character_desc` can not be empty")
 
     def discard_exceeding(self, max_tokens, cur_tokens=None):
         precise = True
@@ -30,7 +30,7 @@ class ZhipuAISession(Session):
                     cur_tokens = cur_tokens - max_tokens
                 break
             elif len(self.messages) == 2 and self.messages[1]["role"] == "user":
-                logger.warn("user message exceed max_tokens. total_tokens={}".format(cur_tokens))
+                logger.warning("user message exceed max_tokens. total_tokens={}".format(cur_tokens))
                 break
             else:
                 logger.debug("max_tokens={}, total_tokens={}, len(messages)={}".format(max_tokens, cur_tokens,

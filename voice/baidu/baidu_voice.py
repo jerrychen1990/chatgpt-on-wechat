@@ -56,7 +56,7 @@ class BaiduVoice(Voice):
 
             self.client = AipSpeech(self.app_id, self.api_key, self.secret_key)
         except Exception as e:
-            logger.warn("BaiduVoice init failed: %s, ignore " % e)
+            logger.warning("BaiduVoice init failed: %s, ignore " % e)
 
     def voiceToText(self, voice_file):
         # 识别本地文件

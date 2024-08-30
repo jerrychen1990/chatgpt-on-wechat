@@ -69,7 +69,7 @@ class FeiShuChanel(ChatChannel):
             # 图片上传
             reply_content = self._upload_image_url(reply.content, access_token)
             if not reply_content:
-                logger.warning("[FeiShu] upload file failed")
+                logger.warninging("[FeiShu] upload file failed")
                 return
             msg_type = "image"
             content_key = "image_key"
@@ -96,7 +96,6 @@ class FeiShuChanel(ChatChannel):
         else:
             logger.error(f"[FeiShu] send message failed, code={res.get('code')}, msg={res.get('msg')}")
 
-
     def fetch_access_token(self) -> str:
         url = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal/"
         headers = {
@@ -117,7 +116,6 @@ class FeiShuChanel(ChatChannel):
                 return res.get("tenant_access_token")
         else:
             logger.error(f"[FeiShu] fetch token error, res={response}")
-
 
     def _upload_image_url(self, img_url, access_token):
         logger.debug(f"[WX] start download image, img_url={img_url}")
@@ -142,7 +140,6 @@ class FeiShuChanel(ChatChannel):
             logger.info(f"[FeiShu] upload file, res={upload_response.content}")
             os.remove(temp_name)
             return upload_response.json().get("data").get("image_key")
-
 
 
 class FeishuController:
@@ -176,13 +173,13 @@ class FeishuController:
             event = request.get("event")
             if header.get("event_type") == self.MESSAGE_RECEIVE_TYPE and event:
                 if not event.get("message") or not event.get("sender"):
-                    logger.warning(f"[FeiShu] invalid message, msg={request}")
+                    logger.warninging(f"[FeiShu] invalid message, msg={request}")
                     return self.FAILED_MSG
                 msg = event.get("message")
 
                 # 幂等判断
                 if channel.receivedMsgs.get(msg.get("message_id")):
-                    logger.warning(f"[FeiShu] repeat msg filtered, event_id={header.get('event_id')}")
+                    logger.warninging(f"[FeiShu] repeat msg filtered, event_id={header.get('event_id')}")
                     return self.SUCCESS_MSG
                 channel.receivedMsgs[msg.get("message_id")] = True
 
@@ -201,7 +198,7 @@ class FeishuController:
                 elif chat_type == "p2p":
                     receive_id_type = "open_id"
                 else:
-                    logger.warning("[FeiShu] message ignore")
+                    logger.warninging("[FeiShu] message ignore")
                     return self.SUCCESS_MSG
                 # 构造飞书消息对象
                 feishu_msg = FeishuMessage(event, is_group=is_group, access_token=channel.fetch_access_token())

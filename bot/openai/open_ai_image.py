@@ -31,10 +31,10 @@ class OpenAIImage(object):
             logger.info("[OPEN_AI] image_url={}".format(image_url))
             return True, image_url
         except openai.error.RateLimitError as e:
-            logger.warn(e)
+            logger.warning(e)
             if retry_count < 1:
                 time.sleep(5)
-                logger.warn("[OPEN_AI] ImgCreate RateLimit exceed, 第{}次重试".format(retry_count + 1))
+                logger.warning("[OPEN_AI] ImgCreate RateLimit exceed, 第{}次重试".format(retry_count + 1))
                 return self.create_img(query, retry_count + 1)
             else:
                 return False, "画图出现问题，请休息一下再问我吧"

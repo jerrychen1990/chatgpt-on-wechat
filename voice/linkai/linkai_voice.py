@@ -12,6 +12,7 @@ from common import const
 import os
 import datetime
 
+
 class LinkAIVoice(Voice):
     def __init__(self):
         pass
@@ -30,7 +31,7 @@ class LinkAIVoice(Voice):
                     audio_convert.any_to_mp3(voice_file, mp3_file)
                     voice_file = mp3_file
                 except Exception as e:
-                    logger.warn(f"[LinkVoice] amr file transfer failed, directly send amr voice file: {format(e)}")
+                    logger.warning(f"[LinkVoice] amr file transfer failed, directly send amr voice file: {format(e)}")
             file = open(voice_file, "rb")
             file_body = {
                 "file": file

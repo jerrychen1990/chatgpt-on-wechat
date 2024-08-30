@@ -54,7 +54,7 @@ class Role(Plugin):
                     self.roles[role["title"].lower()] = role
                     for tag in role["tags"]:
                         if tag not in self.tags:
-                            logger.warning(f"[Role] unknown tag {tag} ")
+                            logger.warninging(f"[Role] unknown tag {tag} ")
                             self.tags[tag] = (tag, [])
                         self.tags[tag][1].append(role)
                 for tag in list(self.tags.keys()):
@@ -69,9 +69,9 @@ class Role(Plugin):
             logger.info("[Role] inited")
         except Exception as e:
             if isinstance(e, FileNotFoundError):
-                logger.warn(f"[Role] init failed, {config_path} not found, ignore or see https://github.com/zhayujie/chatgpt-on-wechat/tree/master/plugins/role .")
+                logger.warning(f"[Role] init failed, {config_path} not found, ignore or see https://github.com/zhayujie/chatgpt-on-wechat/tree/master/plugins/role .")
             else:
-                logger.warn("[Role] init failed, ignore or see https://github.com/zhayujie/chatgpt-on-wechat/tree/master/plugins/role .")
+                logger.warning("[Role] init failed, ignore or see https://github.com/zhayujie/chatgpt-on-wechat/tree/master/plugins/role .")
             raise e
 
     def get_role(self, name, find_closest=True, min_sim=0.35):

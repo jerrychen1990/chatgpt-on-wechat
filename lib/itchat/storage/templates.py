@@ -6,6 +6,7 @@ from ..utils import update_info_dict
 
 logger = logging.getLogger('itchat')
 
+
 class AttributeDict(dict):
     def __getattr__(self, value):
         keyName = value[0].upper() + value[1:]
@@ -20,11 +21,13 @@ class AttributeDict(dict):
         except KeyError:
             return d
 
+
 class UnInitializedItchat(object):
     def _raise_error(self, *args, **kwargs):
-        logger.warning('An itchat instance is called before initialized')
+        logger.warninging('An itchat instance is called before initialized')
     def __getattr__(self, value):
         return self._raise_error
+
 
 class ContactList(list):
     ''' when a dict is append, init function will be called to format that dict '''
@@ -64,6 +67,7 @@ class ContactList(list):
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__.split('.')[-1],
             self.__str__())
+
 
 class AbstractUserDict(AttributeDict):
     def __init__(self, *args, **kwargs):
@@ -132,7 +136,7 @@ class AbstractUserDict(AttributeDict):
         return r
     def __str__(self):
         return '{%s}' % ', '.join(
-            ['%s: %s' % (repr(k),repr(v)) for k,v in self.items()])
+            ['%s: %s' % (repr(k), repr(v)) for k, v in self.items()])
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__.split('.')[-1],
             self.__str__())
@@ -140,7 +144,8 @@ class AbstractUserDict(AttributeDict):
         return 1
     def __setstate__(self, state):
         pass
-        
+
+
 class User(AbstractUserDict):
     def __init__(self, *args, **kwargs):
         super(User, self).__init__(*args, **kwargs)
@@ -165,6 +170,7 @@ class User(AbstractUserDict):
         self.verifyDict = {}
         self['MemberList'] = fakeContactList
 
+
 class MassivePlatform(AbstractUserDict):
     def __init__(self, *args, **kwargs):
         super(MassivePlatform, self).__init__(*args, **kwargs)
@@ -172,6 +178,7 @@ class MassivePlatform(AbstractUserDict):
     def __setstate__(self, state):
         super(MassivePlatform, self).__setstate__(state)
         self['MemberList'] = fakeContactList
+
 
 class Chatroom(AbstractUserDict):
     def __init__(self, *args, **kwargs):
@@ -247,6 +254,7 @@ class Chatroom(AbstractUserDict):
         if not 'MemberList' in self:
             self['MemberList'] = fakeContactList
 
+
 class ChatroomMember(AbstractUserDict):
     def __init__(self, *args, **kwargs):
         super(AbstractUserDict, self).__init__(*args, **kwargs)
@@ -303,6 +311,7 @@ class ChatroomMember(AbstractUserDict):
         super(ChatroomMember, self).__setstate__(state)
         self['MemberList'] = fakeContactList
 
+
 def wrap_user_dict(d):
     userName = d.get('UserName')
     if '@@' in userName:
@@ -312,6 +321,7 @@ def wrap_user_dict(d):
     else:
         r = MassivePlatform(d)
     return r
+
 
 fakeItchat = UnInitializedItchat()
 fakeContactList = ContactList()

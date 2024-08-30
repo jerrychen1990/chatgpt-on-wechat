@@ -112,7 +112,7 @@ class ChatChannel(Channel):
                         nick_name = context["msg"].actual_user_nickname
                         if nick_name and nick_name in nick_name_black_list:
                             # 黑名单过滤
-                            logger.warning(f"[chat_channel] Nickname {nick_name} in In BlackList, ignore")
+                            logger.warninging(f"[chat_channel] Nickname {nick_name} in In BlackList, ignore")
                             return None
 
                         logger.info("[chat_channel]receive group at")
@@ -138,7 +138,7 @@ class ChatChannel(Channel):
                 nick_name = context["msg"].from_user_nickname
                 if nick_name and nick_name in nick_name_black_list:
                     # 黑名单过滤
-                    logger.warning(f"[chat_channel] Nickname '{nick_name}' in In BlackList, ignore")
+                    logger.warninging(f"[chat_channel] Nickname '{nick_name}' in In BlackList, ignore")
                     return None
 
                 match_prefix = check_prefix(content, conf().get("single_chat_prefix", [""]))
@@ -201,7 +201,7 @@ class ChatChannel(Channel):
                 try:
                     any_to_wav(file_path, wav_path)
                 except Exception as e:  # 转换失败，直接使用mp3，对于某些api，mp3也可以识别
-                    logger.warning("[chat_channel]any to wav error, use raw path. " + str(e))
+                    logger.warninging("[chat_channel]any to wav error, use raw path. " + str(e))
                     wav_path = file_path
                 # 语音识别
                 reply = super().build_voice_to_text(wav_path)
@@ -212,7 +212,7 @@ class ChatChannel(Channel):
                         os.remove(wav_path)
                 except Exception as e:
                     pass
-                    # logger.warning("[chat_channel]delete temp file error: " + str(e))
+                    # logger.warninging("[chat_channel]delete temp file error: " + str(e))
 
                 if reply.type == ReplyType.TEXT:
                     new_context = self._compose_context(ContextType.TEXT, reply.content, **context.kwargs)
@@ -230,7 +230,7 @@ class ChatChannel(Channel):
             elif context.type == ContextType.FUNCTION or context.type == ContextType.FILE:  # 文件消息及函数调用等，当前无默认逻辑
                 pass
             else:
-                logger.warning("[chat_channel] unknown context type: {}".format(context.type))
+                logger.warninging("[chat_channel] unknown context type: {}".format(context.type))
                 return
         return reply
 
@@ -270,7 +270,7 @@ class ChatChannel(Channel):
                     logger.error("[chat_channel] unknown reply type: {}".format(reply.type))
                     return
             if desire_rtype and desire_rtype != reply.type and reply.type not in [ReplyType.ERROR, ReplyType.INFO]:
-                logger.warning("[chat_channel] desire_rtype: {}, but reply type: {}".format(context.get("desire_rtype"), reply.type))
+                logger.warninging("[chat_channel] desire_rtype: {}, but reply type: {}".format(context.get("desire_rtype"), reply.type))
             return reply
 
     def _send_reply(self, context: Context, reply: Reply):

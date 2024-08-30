@@ -33,10 +33,11 @@ def load_login(core):
     core.get_msg           = get_msg
     core.logout            = logout
 
-async def login(self, enableCmdQR=False, picDir=None, qrCallback=None, EventScanPayload=None,ScanStatus=None,event_stream=None,
+
+async def login(self, enableCmdQR=False, picDir=None, qrCallback=None, EventScanPayload=None, ScanStatus=None, event_stream=None,
         loginCallback=None, exitCallback=None):
     if self.alive or self.isLogging:
-        logger.warning('itchat has already logged in.')
+        logger.warninging('itchat has already logged in.')
         return
     self.isLogging = True
 
@@ -123,6 +124,7 @@ async def login(self, enableCmdQR=False, picDir=None, qrCallback=None, EventScan
     await self.start_receiving(exitCallback)
     self.isLogging = False
 
+
 async def push_login(core):
     cookiesDict = core.s.cookies.get_dict()
     if 'wxuin' in cookiesDict:
@@ -134,6 +136,7 @@ async def push_login(core):
             core.uuid = r['uuid']
             return r['uuid']
     return False
+
 
 def get_QRuuid(self):
     url = '%s/jslogin' % config.BASE_URL
@@ -149,6 +152,7 @@ def get_QRuuid(self):
     if data and data.group(1) == '200':
         self.uuid = data.group(2)
         return self.uuid
+
 
 async def get_QR(self, uuid=None, enableCmdQR=False, picDir=None, qrCallback=None):
     uuid = uuid or self.uuid
@@ -166,6 +170,7 @@ async def get_QR(self, uuid=None, enableCmdQR=False, picDir=None, qrCallback=Non
         else:
             utils.print_qr(picDir)
     return qrStorage
+
 
 async def check_login(self, uuid=None):
     uuid = uuid or self.uuid
@@ -186,6 +191,7 @@ async def check_login(self, uuid=None):
         return data.group(1)
     else:
         return '400'
+
 
 async def process_login_info(core, loginContent):
     ''' when finish login (scanning qrcode)
@@ -245,6 +251,7 @@ async def process_login_info(core, loginContent):
         return False
     return True
 
+
 async def web_init(self):
     url = '%s/webwxinit' % self.loginInfo['url']
     params = {
@@ -284,6 +291,7 @@ async def web_init(self):
         update_local_friends(self, otherList)
     return dic
 
+
 async def show_mobile_login(self):
     url = '%s/webwxstatusnotify?lang=zh_CN&pass_ticket=%s' % (
         self.loginInfo['url'], self.loginInfo['pass_ticket'])
@@ -298,6 +306,7 @@ async def show_mobile_login(self):
         'User-Agent' : config.USER_AGENT, }
     r = self.s.post(url, data=json.dumps(data), headers=headers)
     return ReturnValue(rawResponse=r)
+
 
 async def start_receiving(self, exitCallback=None, getReceivingFnOnly=False):
     self.alive = True
@@ -349,6 +358,7 @@ async def start_receiving(self, exitCallback=None, getReceivingFnOnly=False):
         maintainThread.setDaemon(True)
         maintainThread.start()
 
+
 def sync_check(self):
     url = '%s/synccheck' % self.loginInfo.get('syncUrl', self.loginInfo['url'])
     params = {
@@ -382,11 +392,12 @@ def sync_check(self):
         return None
     return pm.group(2)
 
+
 def get_msg(self):
     self.loginInfo['deviceid'] = 'e' + repr(random.random())[2:17]
     url = '%s/webwxsync?sid=%s&skey=%s&pass_ticket=%s' % (
         self.loginInfo['url'], self.loginInfo['wxsid'],
-        self.loginInfo['skey'],self.loginInfo['pass_ticket'])
+        self.loginInfo['skey'], self.loginInfo['pass_ticket'])
     data = {
         'BaseRequest' : self.loginInfo['BaseRequest'],
         'SyncKey'     : self.loginInfo['SyncKey'],
@@ -401,6 +412,7 @@ def get_msg(self):
     self.loginInfo['synckey'] = '|'.join(['%s_%s' % (item['Key'], item['Val'])
         for item in dic['SyncCheckKey']['List']])
     return dic['AddMsgList'], dic['ModContactList']
+
 
 def logout(self):
     if self.alive:

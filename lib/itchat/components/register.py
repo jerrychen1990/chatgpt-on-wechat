@@ -10,11 +10,13 @@ from ..storage import templates
 
 logger = logging.getLogger('itchat')
 
+
 def load_register(core):
     core.auto_login       = auto_login
     core.configured_reply = configured_reply
     core.msg_register     = msg_register
     core.run              = run
+
 
 def auto_login(self, hotReload=False, statusStorageDir='itchat.pkl',
         enableCmdQR=False, picDir=None, qrCallback=None,
@@ -37,6 +39,7 @@ def auto_login(self, hotReload=False, statusStorageDir='itchat.pkl',
     else:
         self.login(enableCmdQR=enableCmdQR, picDir=picDir, qrCallback=qrCallback,
             loginCallback=loginCallback, exitCallback=exitCallback)
+
 
 def configured_reply(self):
     ''' determine the type of message and reply if its method is defined
@@ -64,7 +67,8 @@ def configured_reply(self):
                 if r is not None:
                     self.send(r, msg.get('FromUserName'))
             except:
-                logger.warning(traceback.format_exc())
+                logger.warninging(traceback.format_exc())
+
 
 def msg_register(self, msgType, isFriendChat=False, isGroupChat=False, isMpChat=False):
     ''' a decorator constructor
@@ -83,6 +87,7 @@ def msg_register(self, msgType, isFriendChat=False, isGroupChat=False, isMpChat=
                 self.functionDict['FriendChat'][_msgType] = fn
         return fn
     return _msg_register
+
 
 def run(self, debug=False, blockThread=True):
     logger.info('Start auto replying.')

@@ -14,6 +14,7 @@ from bot.baidu.baidu_wenxin_session import BaiduWenxinSession
 BAIDU_API_KEY = conf().get("baidu_wenxin_api_key")
 BAIDU_SECRET_KEY = conf().get("baidu_wenxin_secret_key")
 
+
 class BaiduWenxinBot(Bot):
 
     def __init__(self):
@@ -74,7 +75,7 @@ class BaiduWenxinBot(Bot):
             logger.info("[BAIDU] model={}".format(session.model))
             access_token = self.get_access_token()
             if access_token == 'None':
-                logger.warn("[BAIDU] access token 获取失败")
+                logger.warning("[BAIDU] access token 获取失败")
                 return {
                     "total_tokens": 0,
                     "completion_tokens": 0,
@@ -99,7 +100,7 @@ class BaiduWenxinBot(Bot):
             }
         except Exception as e:
             need_retry = retry_count < 2
-            logger.warn("[BAIDU] Exception: {}".format(e))
+            logger.warning("[BAIDU] Exception: {}".format(e))
             need_retry = False
             self.sessions.clear_session(session.session_id)
             result = {"total_tokens": 0, "completion_tokens": 0, "content": "出错了: {}".format(e)}

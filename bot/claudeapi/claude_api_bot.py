@@ -99,26 +99,26 @@ class ClaudeAPIBot(Bot, OpenAIImage):
             need_retry = retry_count < 2
             result = {"completion_tokens": 0, "content": "我现在有点累了，等会再来吧"}
             if isinstance(e, openai.error.RateLimitError):
-                logger.warn("[CLAUDE_API] RateLimitError: {}".format(e))
+                logger.warning("[CLAUDE_API] RateLimitError: {}".format(e))
                 result["content"] = "提问太快啦，请休息一下再问我吧"
                 if need_retry:
                     time.sleep(20)
             elif isinstance(e, openai.error.Timeout):
-                logger.warn("[CLAUDE_API] Timeout: {}".format(e))
+                logger.warning("[CLAUDE_API] Timeout: {}".format(e))
                 result["content"] = "我没有收到你的消息"
                 if need_retry:
                     time.sleep(5)
             elif isinstance(e, openai.error.APIConnectionError):
-                logger.warn("[CLAUDE_API] APIConnectionError: {}".format(e))
+                logger.warning("[CLAUDE_API] APIConnectionError: {}".format(e))
                 need_retry = False
                 result["content"] = "我连接不到你的网络"
             else:
-                logger.warn("[CLAUDE_API] Exception: {}".format(e))
+                logger.warning("[CLAUDE_API] Exception: {}".format(e))
                 need_retry = False
                 self.sessions.clear_session(session.session_id)
 
             if need_retry:
-                logger.warn("[CLAUDE_API] 第{}次重试".format(retry_count + 1))
+                logger.warning("[CLAUDE_API] 第{}次重试".format(retry_count + 1))
                 return self.reply_text(session, retry_count + 1)
             else:
                 return result

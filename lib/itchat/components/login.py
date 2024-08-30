@@ -40,7 +40,7 @@ def load_login(core):
 def login(self, enableCmdQR=False, picDir=None, qrCallback=None,
           loginCallback=None, exitCallback=None):
     if self.alive or self.isLogging:
-        logger.warning('itchat has already logged in.')
+        logger.warninging('itchat has already logged in.')
         return
     self.isLogging = True
     logger.info('Ready to login.')

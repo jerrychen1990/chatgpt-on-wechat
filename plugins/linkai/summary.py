@@ -70,13 +70,13 @@ class LinkSummary:
         file_size = os.path.getsize(file_path) // 1000
 
         if (sum_config.get("max_file_size") and file_size > sum_config.get("max_file_size")) or file_size > 15000:
-            logger.warn(f"[LinkSum] file size exceeds limit, No processing, file_size={file_size}KB")
+            logger.warning(f"[LinkSum] file size exceeds limit, No processing, file_size={file_size}KB")
             return False
 
         suffix = file_path.split(".")[-1]
         support_list = ["txt", "csv", "docx", "pdf", "md", "jpg", "jpeg", "png"]
         if suffix not in support_list:
-            logger.warn(f"[LinkSum] unsupported file, suffix={suffix}, support_list={support_list}")
+            logger.warning(f"[LinkSum] unsupported file, suffix={suffix}, support_list={support_list}")
             return False
 
         return True
@@ -88,7 +88,7 @@ class LinkSummary:
         black_support_list = ["https://mp.weixin.qq.com/mp/waerrpage"]
         for black_url_prefix in black_support_list:
             if url.strip().startswith(black_url_prefix):
-                logger.warn(f"[LinkSum] unsupported url, no need to process, url={url}")
+                logger.warning(f"[LinkSum] unsupported url, no need to process, url={url}")
                 return False
         for support_url in support_list:
             if url.strip().startswith(support_url):

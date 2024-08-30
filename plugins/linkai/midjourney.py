@@ -130,12 +130,12 @@ class MJBot:
             return
 
         if not self.config.get("enabled"):
-            logger.warn("Midjourney绘画未开启，请查看 plugins/linkai/config.json 中的配置")
+            logger.warning("Midjourney绘画未开启，请查看 plugins/linkai/config.json 中的配置")
             self._set_reply_text(f"Midjourney绘画未开启", e_context, level=ReplyType.INFO)
             return
 
         if not self._check_rate_limit(session_id, e_context):
-            logger.warn("[MJ] midjourney task exceed rate limit")
+            logger.warning("[MJ] midjourney task exceed rate limit")
             return
 
         if mj_type == TaskType.GENERATE:
@@ -286,12 +286,12 @@ class MJBot:
                     max_retry_times -= 1
                 else:
                     res_json = res.json()
-                    logger.warn(f"[MJ] image check error, status_code={res.status_code}, res={res_json}")
+                    logger.warning(f"[MJ] image check error, status_code={res.status_code}, res={res_json}")
                     max_retry_times -= 20
             except Exception as e:
                 max_retry_times -= 20
-                logger.warn(e)
-        logger.warn("[MJ] end from poll")
+                logger.warning(e)
+        logger.warning("[MJ] end from poll")
         if self.tasks.get(task.id):
             self.tasks[task.id].status = Status.EXPIRED
 

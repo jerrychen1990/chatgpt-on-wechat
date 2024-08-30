@@ -39,7 +39,7 @@ class BDunit(Plugin):
             self.handlers[Event.ON_HANDLE_CONTEXT] = self.on_handle_context
             logger.info("[BDunit] inited")
         except Exception as e:
-            logger.warn("[BDunit] init failed, ignore ")
+            logger.warning("[BDunit] init failed, ignore ")
             raise e
 
     def on_handle_context(self, e_context: EventContext):
@@ -141,7 +141,7 @@ class BDunit(Plugin):
             try:
                 return parsed["result"]["response_list"][0]["schema"]["intent"]
             except Exception as e:
-                logger.warning(e)
+                logger.warninging(e)
                 return ""
         else:
             return ""
@@ -178,7 +178,7 @@ class BDunit(Plugin):
                 try:
                     return parsed["result"]["response_list"][0]["schema"]["slots"]
                 except Exception as e:
-                    logger.warning(e)
+                    logger.warninging(e)
                     return []
             for response in response_list:
                 if "schema" in response and "intent" in response["schema"] and "slots" in response["schema"] and response["schema"]["intent"] == intent:
@@ -238,14 +238,14 @@ class BDunit(Plugin):
                 try:
                     return response_list[0]["action_list"][0]["say"]
                 except Exception as e:
-                    logger.warning(e)
+                    logger.warninging(e)
                     return ""
             for response in response_list:
                 if "schema" in response and "intent" in response["schema"] and response["schema"]["intent"] == intent:
                     try:
                         return response["action_list"][0]["say"]
                     except Exception as e:
-                        logger.warning(e)
+                        logger.warninging(e)
                         return ""
             return ""
         else:

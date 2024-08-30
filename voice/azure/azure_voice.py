@@ -54,7 +54,7 @@ class AzureVoice(Voice):
             self.speech_config.speech_synthesis_voice_name = self.config["speech_synthesis_voice_name"]
             self.speech_config.speech_recognition_language = self.config["speech_recognition_language"]
         except Exception as e:
-            logger.warn("AzureVoice init failed: %s, ignore " % e)
+            logger.warning("AzureVoice init failed: %s, ignore " % e)
 
     def voiceToText(self, voice_file):
         audio_config = speechsdk.AudioConfig(filename=voice_file)

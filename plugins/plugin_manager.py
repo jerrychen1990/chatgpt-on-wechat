@@ -112,7 +112,7 @@ class PluginManager:
                             self.loaded[plugin_path] = importlib.import_module(import_path)
                         self.current_plugin_path = None
                     except Exception as e:
-                        logger.warn("Failed to import plugin %s: %s" % (plugin_name, e))
+                        logger.warning("Failed to import plugin %s: %s" % (plugin_name, e))
                         continue
         pconf = self.pconf
         news = [self.plugins[name] for name in self.plugins]
@@ -149,7 +149,7 @@ class PluginManager:
                 try:
                     instance = plugincls()
                 except Exception as e:
-                    logger.warn("Failed to init %s, diabled. %s" % (name, e))
+                    logger.warning("Failed to init %s, diabled. %s" % (name, e))
                     self.disable_plugin(name)
                     failed_plugins.append(name)
                     continue

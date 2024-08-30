@@ -126,7 +126,7 @@ class MinimaxBot(Bot):
                 need_retry = False
                 if res.status_code >= 500:
                     # server error, need retry
-                    logger.warn(f"[Minimax_AI] do retry, times={retry_count}")
+                    logger.warning(f"[Minimax_AI] do retry, times={retry_count}")
                     need_retry = retry_count < 2
                 elif res.status_code == 401:
                     result["content"] = "授权失败，请检查API Key是否正确"

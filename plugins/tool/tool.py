@@ -24,10 +24,9 @@ class Tool(Plugin):
         self.handlers[Event.ON_HANDLE_CONTEXT] = self.on_handle_context
         self.app = self._reset_app()
         if not self.tool_config.get("tools"):
-            logger.warn("[tool] init failed, ignore ")
+            logger.warning("[tool] init failed, ignore ")
             raise Exception("config.json not found")
         logger.info("[tool] inited")
-
 
     def get_help_text(self, verbose=False, **kwargs):
         help_text = "这是一个能让chatgpt联网，搜索，数字运算的插件，将赋予强大且丰富的扩展能力。"
@@ -93,7 +92,7 @@ class Tool(Plugin):
                     e_context.action = EventAction.BREAK
                     return
                 query = content_list[1].strip()
-                
+
                 use_one_tool = False
                 for tool_name in main_tool_register.get_registered_tool_names():
                     if query.startswith(tool_name):
@@ -233,7 +232,7 @@ class Tool(Plugin):
             if tool in main_tool_register.get_registered_tool_names():
                 valid_list.append(tool)
             else:
-                logger.warning("[tool] filter invalid tool: " + repr(tool))
+                logger.warninging("[tool] filter invalid tool: " + repr(tool))
         return valid_list
 
     def _reset_app(self) -> App:

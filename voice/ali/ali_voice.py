@@ -40,7 +40,7 @@ class AliVoice(Voice):
             self.access_key_id = conf().get("qwen_access_key_id") or config.get("access_key_id")
             self.access_key_secret = conf().get("qwen_access_key_secret") or config.get("access_key_secret")
         except Exception as e:
-            logger.warn("AliVoice init failed: %s, ignore " % e)
+            logger.warning("AliVoice init failed: %s, ignore " % e)
 
     def textToVoice(self, text):
         """

@@ -16,7 +16,7 @@ def time_checker(f):
             time_regex = re.compile(r"^([01]?[0-9]|2[0-4])(:)([0-5][0-9])$")
 
             if not (time_regex.match(chat_start_time) and time_regex.match(chat_stop_time)):
-                logger.warning("时间格式不正确，请在config.json中修改CHAT_START_TIME/CHAT_STOP_TIME。")
+                logger.warninging("时间格式不正确，请在config.json中修改CHAT_START_TIME/CHAT_STOP_TIME。")
                 return None
 
             now_time = time.strptime(time.strftime("%H:%M"), "%H:%M")

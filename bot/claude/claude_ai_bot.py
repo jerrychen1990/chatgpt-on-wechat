@@ -35,7 +35,7 @@ class ClaudeAIBot(Bot, OpenAIImage):
         random_uuid_str = str(random_uuid)
         formatted_uuid = f"{random_uuid_str[0:8]}-{random_uuid_str[9:13]}-{random_uuid_str[14:18]}-{random_uuid_str[19:23]}-{random_uuid_str[24:]}"
         return formatted_uuid
-        
+
     def reply(self, query, context: Context = None) -> Reply:
         if context.type == ContextType.TEXT:
             return self._chat(query, context)
@@ -78,7 +78,7 @@ class ClaudeAIBot(Bot, OpenAIImage):
             return None
         return uuid
 
-    def conversation_share_check(self,session_id):
+    def conversation_share_check(self, session_id):
         if conf().get("claude_uuid") is not None and conf().get("claude_uuid") != "":
             con_uuid = conf().get("claude_uuid")
             return con_uuid
@@ -117,7 +117,7 @@ class ClaudeAIBot(Bot, OpenAIImage):
         response = requests.post(url, headers=headers, data=payload, impersonate="chrome110", proxies=self.proxies, timeout=400)
         # Returns JSON of the newly created conversation information
         return response.json()
-        
+
     def _chat(self, query, context, retry_count=0) -> Reply:
         """
         发起对话请求
@@ -128,7 +128,7 @@ class ClaudeAIBot(Bot, OpenAIImage):
         """
         if retry_count >= 2:
             # exit from retry 2 times
-            logger.warn("[CLAUDEAI] failed after maximum number of retry times")
+            logger.warning("[CLAUDEAI] failed after maximum number of retry times")
             return Reply(ReplyType.ERROR, "请再问我一次吧")
 
         try:
@@ -176,7 +176,7 @@ class ClaudeAIBot(Bot, OpenAIImage):
                 'TE': 'trailers'
             }
 
-            res = requests.post(base_url + "/api/append_message", headers=headers, data=payload,impersonate="chrome110",proxies= self.proxies,timeout=400)
+            res = requests.post(base_url + "/api/append_message", headers=headers, data=payload, impersonate="chrome110", proxies= self.proxies, timeout=400)
             if res.status_code == 200 or "pemission" in res.text:
                 # execute success
                 decoded_data = res.content.decode("utf-8")
@@ -210,7 +210,7 @@ class ClaudeAIBot(Bot, OpenAIImage):
                 if res.status_code >= 500:
                     # server error, need retry
                     time.sleep(2)
-                    logger.warn(f"[CLAUDE] do retry, times={retry_count}")
+                    logger.warning(f"[CLAUDE] do retry, times={retry_count}")
                     return self._chat(query, context, retry_count + 1)
                 return Reply(ReplyType.ERROR, "提问太快啦，请休息一下再问我吧")
 
@@ -218,5 +218,5 @@ class ClaudeAIBot(Bot, OpenAIImage):
             logger.exception(e)
             # retry
             time.sleep(2)
-            logger.warn(f"[CLAUDE] do retry, times={retry_count}")
+            logger.warning(f"[CLAUDE] do retry, times={retry_count}")
             return self._chat(query, context, retry_count + 1)

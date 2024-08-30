@@ -43,7 +43,7 @@ class Plugin:
                     json.dump(config, f, indent=4, ensure_ascii=False)
 
         except Exception as e:
-            logger.warn("save plugin config failed: {}".format(e))
+            logger.warning("save plugin config failed: {}".format(e))
 
     def get_help_text(self, **kwargs):
         return "暂无帮助信息"
