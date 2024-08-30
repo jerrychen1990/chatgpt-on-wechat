@@ -5,7 +5,7 @@
   "clear_memory_commands": "清除记忆",
   "bot_type": "aifori",
   "hot_reload": true,
-  "voice_to_text": "aifori",
+  "voice_to_text": "xunfei",
   "text_to_voice": "aifori",
   "proxy": "127.0.0.1:7890",
   "single_chat_prefix": [
@@ -25,7 +25,7 @@
   ],
   "speech_recognition": true,
   "group_speech_recognition": false,
-  "voice_reply_voice": true,
+  "voice_reply_voice": false,
   "conversation_max_tokens": 2500,
   "expires_in_seconds": 3600,
   "temperature": 0.7

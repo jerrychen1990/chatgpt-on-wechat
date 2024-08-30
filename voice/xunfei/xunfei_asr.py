@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 #
-#  Author: njnuko 
-#  Email: njnuko@163.com 
+#  Author: njnuko
+#  Email: njnuko@163.com
 #
 #  这个文档是基于官方的demo来改的，固体官方demo文档请参考官网
 #
@@ -28,8 +28,8 @@ from wsgiref.handlers import format_date_time
 from datetime import datetime
 from time import mktime
 import _thread as thread
-import os
 import wave
+from loguru import logger
 
 
 STATUS_FIRST_FRAME = 0  # 第一帧的标识
@@ -46,7 +46,7 @@ global wsParam
 
 class Ws_Param(object):
     # 初始化
-    def __init__(self, APPID, APIKey, APISecret,BusinessArgs, AudioFile):
+    def __init__(self, APPID, APIKey, APISecret, BusinessArgs, AudioFile):
         self.APPID = APPID
         self.APIKey = APIKey
         self.APISecret = APISecret
@@ -87,7 +87,8 @@ class Ws_Param(object):
         #print("date: ",date)
         #print("v: ",v)
         # 此处打印出建立连接时候的url,参考本demo的时候可取消上方打印的注释，比对相同参数时生成的url与自己代码生成的url是否一致
-        #print('websocket url :', url)
+        # print('websocket url :', url)
+        logger.info("websocket url : %s" % url)
         return url
 
 
@@ -97,6 +98,7 @@ def on_message(ws, message):
     try:
         code = json.loads(message)["code"]
         sid = json.loads(message)["sid"]
+        logger.info(f"get message :{message}")
         if code != 0:
             errMsg = json.loads(message)["message"]
             print("sid:%s call error:%s code is:%s" % (sid, errMsg, code))
@@ -108,10 +110,10 @@ def on_message(ws, message):
                 rep = temp1["rg"]
                 rep_start = rep[0]
                 rep_end = rep[1]
-                for sn in range(rep_start,rep_end+1):
+                for sn in range(rep_start, rep_end+1):
                     #print("before pop",whole_dict)
                     #print("sn",sn)
-                    whole_dict.pop(sn,None)
+                    whole_dict.pop(sn, None)
                     #print("after pop",whole_dict)
                 results = ""
                 for i in data:
@@ -130,14 +132,13 @@ def on_message(ws, message):
         print("receive msg,but parse exception:", e)
 
 
-
 # 收到websocket错误的处理
 def on_error(ws, error):
     print("### error:", error)
 
 
 # 收到websocket关闭的处理
-def on_close(ws,a,b):
+def on_close(ws, a, b):
     print("### closed ###")
 
 
@@ -152,6 +153,7 @@ def on_open(ws):
         with wave.open(wsParam.AudioFile, "rb") as fp:
             while True:
                 buf = fp.readframes(frameSize)
+                logger.info(f"sending {len(buf)} bytes with {status=}")
                 # 文件结束
                 if not buf:
                     status = STATUS_LAST_FRAME
@@ -161,7 +163,7 @@ def on_open(ws):
                 if status == STATUS_FIRST_FRAME:
                     d = {"common": wsParam.CommonArgs,
                          "business": wsParam.BusinessArgs,
-                         "data": {"status": 0, "format": "audio/L16;rate=16000","audio": str(base64.b64encode(buf), 'utf-8'), "encoding": "raw"}} 
+                         "data": {"status": 0, "format": "audio/L16;rate=16000", "audio": str(base64.b64encode(buf), 'utf-8'), "encoding": "raw"}}
                     d = json.dumps(d)
                     ws.send(d)
                     status = STATUS_CONTINUE_FRAME
@@ -186,12 +188,14 @@ def on_open(ws):
     thread.start_new_thread(run, ())
 
 #提供给xunfei_voice调用的函数
-def xunfei_asr(APPID,APISecret,APIKey,BusinessArgsASR,AudioFile):
+
+
+def xunfei_asr(APPID, APISecret, APIKey, BusinessArgsASR, AudioFile):
     global whole_dict
     global wsParam
     whole_dict = {}
     wsParam1 = Ws_Param(APPID=APPID, APISecret=APISecret,
-                       APIKey=APIKey,BusinessArgs=BusinessArgsASR,
+                       APIKey=APIKey, BusinessArgs=BusinessArgsASR,
                        AudioFile=AudioFile)
     #wsParam是global变量，给上面on_open函数调用使用的
     wsParam = wsParam1
@@ -206,4 +210,4 @@ def xunfei_asr(APPID,APISecret,APIKey,BusinessArgsASR,AudioFile):
         whole_words += whole_dict[i]
     return whole_words
 
-     
+

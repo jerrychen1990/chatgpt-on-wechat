@@ -40,7 +40,7 @@ dingtalk_stream
 
 
 # wechaty
-
+wechaty
 # aifori
 liteai
 python-snippets

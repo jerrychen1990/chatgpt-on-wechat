@@ -23,6 +23,8 @@ from voice.voice import Voice
 from config import conf
 import pysilk
 from pydub import AudioSegment
+from liteai.voice import file2voice
+# from liteai.api import asr
 
 
 def mp3_to_silk(mp3_path, silk_path):
@@ -89,19 +91,8 @@ class AiforiVoice(Voice):
         :return: 返回一个Reply对象，其中包含转换得到的文本或错误信息。
         """
         logger.info(f"Aifori doing asr:{voice_file}")
-        # Aifori还不支持ASR，暂时返回固定文本
-        text= "你好呀"
-        return Reply(ReplyType.TEXT, text)
-        # return Reply(ReplyType.ERROR, "抱歉，Aifori暂不支持语音识别")
 
-        # # 提取有效的token
-        # logger.debug("[Ali] voice file name={}".format(voice_file))
-        # pcm = get_pcm_from_wav(voice_file)
-        # text = speech_to_text_aliyun(self.api_url_voice_to_text, pcm, self.app_key, token_id)
-        # if text:
-        #     logger.info("[Ali] VoicetoText = {}".format(text))
-        #     reply = Reply(ReplyType.TEXT, text)
-        # else:
-        #     reply = Reply(ReplyType.ERROR, "抱歉，语音识别失败")
-        # return reply
+        voice = file2voice(voice_file)
+        text = liteai.api.asr(voice=voice, model="xunfei_asr")
+        return Reply(ReplyType.TEXT, text)
 
