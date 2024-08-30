@@ -37,3 +37,4 @@ output.silk
 *.ipynb
 config-ye.json
 config-aifori-wx.json
+config*.json

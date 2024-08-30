@@ -2,10 +2,12 @@ import re
 
 from bridge.context import ContextType
 from channel.chat_message import ChatMessage
-from common.log import logger
+# from common.log import logger
+from loguru import logger
 from common.tmp_dir import TmpDir
 from lib import itchat
 from lib.itchat.content import *
+
 
 class WechatMessage(ChatMessage):
     def __init__(self, itchat_msg, is_group=False):
@@ -41,7 +43,7 @@ class WechatMessage(ChatMessage):
                 self.ctype = ContextType.EXIT_GROUP
                 self.content = itchat_msg["Content"]
                 self.actual_user_nickname = re.findall(r"\"(.*?)\"", itchat_msg["Content"])[0]
-                    
+
             elif "你已添加了" in itchat_msg["Content"]:  #通过好友请求
                 self.ctype = ContextType.ACCEPT_FRIEND
                 self.content = itchat_msg["Content"]
@@ -89,7 +91,7 @@ class WechatMessage(ChatMessage):
                 # 自身的展示名，当设置了群昵称时，该字段表示群昵称
                 self.self_display_name = itchat_msg["User"].get("Self").get("DisplayName")
         except KeyError as e:  # 处理偶尔没有对方信息的情况
-            logger.warn("[WX]get other_user_id failed: " + str(e))
+            logger.warning("[WX]get other_user_id failed: " + str(e))
             if self.from_user_id == user_id:
                 self.other_user_id = self.to_user_id
             else:
