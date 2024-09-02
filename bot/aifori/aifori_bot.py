@@ -22,7 +22,9 @@ class AiforiBot(Bot):
 
     def __init__(self):
         super().__init__()
-        self.client = AiForiClient(host=conf()["aifori_url"])
+        username=conf().get("aifori_username", "")
+        password=conf().get("aifori_username", "")
+        self.client = AiForiClient(host=conf()["aifori_url"], username=username, password=password)
 
     def reply(self, query, context=None):
         # acquire reply content
