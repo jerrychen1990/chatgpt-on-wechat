@@ -180,7 +180,8 @@ available_setting = {
     "aifori_url": "http://127.0.0.1:9001", # Aifori服务地址
     "aifori_assistant_id": "Aifori_wechat", # Aifori助手ID
     "aifori_username": "",
-    "aifori_password": ""
+    "aifori_password": "",
+    "recall_memory": True # 是否开启记忆检索功能
 }
 
 

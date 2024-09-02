@@ -51,7 +51,8 @@ class AiforiBot(Bot):
             user_id = msg.other_user_id
             user_info = self.client.get_or_create_user(user_id=user_id, name=msg.from_user_nickname, desc=msg.from_user_nickname)
             logger.debug(f"user_info={user_info}")
-            req = ChatRequest(assistant_id=conf()["aifori_assistant_id"], user_id=user_id, session_id=session_id, message=query, do_remember=True, model="glm-4-0520")
+            req = ChatRequest(assistant_id=conf()["aifori_assistant_id"], user_id=user_id, session_id=session_id, message=query,
+                               do_remember=True, model="glm-4-0520", recall_memory=conf().get("recall_memory", False))
 
             reply_content = self.client.chat(req, stream=False).content
 
