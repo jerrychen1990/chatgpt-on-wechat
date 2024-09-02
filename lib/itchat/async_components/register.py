@@ -67,7 +67,7 @@ async def configured_reply(self, event_stream, payload, message_container):
                 if r is not None:
                     await self.send(r, msg.get('FromUserName'))
             except:
-                logger.warninging(traceback.format_exc())
+                logger.warning(traceback.format_exc())
 
 
 def msg_register(self, msgType, isFriendChat=False, isGroupChat=False, isMpChat=False):

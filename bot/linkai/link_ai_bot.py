@@ -311,7 +311,7 @@ class LinkAIBot(Bot):
         if res.status_code == 200:
             return res.json()
         else:
-            logger.warninging(f"[LinkAI] find app info exception, res={res}")
+            logger.warning(f"[LinkAI] find app info exception, res={res}")
 
     def create_img(self, query, retry_count=0, api_key=None):
         try:
@@ -453,7 +453,7 @@ class LinkAISessionManager(SessionManager):
             tokens_cnt = session.discard_exceeding(max_tokens, total_tokens)
             logger.debug(f"[LinkAI] chat history, before tokens={total_tokens}, now tokens={tokens_cnt}")
         except Exception as e:
-            logger.warninging("Exception when counting tokens precisely for session: {}".format(str(e)))
+            logger.warning("Exception when counting tokens precisely for session: {}".format(str(e)))
         return session
 
 

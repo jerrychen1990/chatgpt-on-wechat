@@ -67,7 +67,7 @@ def configured_reply(self):
                 if r is not None:
                     self.send(r, msg.get('FromUserName'))
             except:
-                logger.warninging(traceback.format_exc())
+                logger.warning(traceback.format_exc())
 
 
 def msg_register(self, msgType, isFriendChat=False, isGroupChat=False, isMpChat=False):

@@ -18,7 +18,7 @@ def get_with_retry(get_func, max_retries=5, delay=5):
         result = get_func()
         if result:
             break
-        logger.warninging(f"获取数据失败，重试第{retries + 1}次······")
+        logger.warning(f"获取数据失败，重试第{retries + 1}次······")
         retries += 1
         time.sleep(delay)  # 等待一段时间后重试
     return result

@@ -54,7 +54,7 @@ class Role(Plugin):
                     self.roles[role["title"].lower()] = role
                     for tag in role["tags"]:
                         if tag not in self.tags:
-                            logger.warninging(f"[Role] unknown tag {tag} ")
+                            logger.warning(f"[Role] unknown tag {tag} ")
                             self.tags[tag] = (tag, [])
                         self.tags[tag][1].append(role)
                 for tag in list(self.tags.keys()):

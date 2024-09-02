@@ -141,7 +141,7 @@ class BDunit(Plugin):
             try:
                 return parsed["result"]["response_list"][0]["schema"]["intent"]
             except Exception as e:
-                logger.warninging(e)
+                logger.warning(e)
                 return ""
         else:
             return ""
@@ -178,7 +178,7 @@ class BDunit(Plugin):
                 try:
                     return parsed["result"]["response_list"][0]["schema"]["slots"]
                 except Exception as e:
-                    logger.warninging(e)
+                    logger.warning(e)
                     return []
             for response in response_list:
                 if "schema" in response and "intent" in response["schema"] and "slots" in response["schema"] and response["schema"]["intent"] == intent:
@@ -238,14 +238,14 @@ class BDunit(Plugin):
                 try:
                     return response_list[0]["action_list"][0]["say"]
                 except Exception as e:
-                    logger.warninging(e)
+                    logger.warning(e)
                     return ""
             for response in response_list:
                 if "schema" in response and "intent" in response["schema"] and response["schema"]["intent"] == intent:
                     try:
                         return response["action_list"][0]["say"]
                     except Exception as e:
-                        logger.warninging(e)
+                        logger.warning(e)
                         return ""
             return ""
         else:

@@ -232,7 +232,7 @@ class Tool(Plugin):
             if tool in main_tool_register.get_registered_tool_names():
                 valid_list.append(tool)
             else:
-                logger.warninging("[tool] filter invalid tool: " + repr(tool))
+                logger.warning("[tool] filter invalid tool: " + repr(tool))
         return valid_list
 
     def _reset_app(self) -> App:

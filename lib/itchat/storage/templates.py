@@ -24,7 +24,7 @@ class AttributeDict(dict):
 
 class UnInitializedItchat(object):
     def _raise_error(self, *args, **kwargs):
-        logger.warninging('An itchat instance is called before initialized')
+        logger.warning('An itchat instance is called before initialized')
     def __getattr__(self, value):
         return self._raise_error
 

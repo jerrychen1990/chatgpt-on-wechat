@@ -69,7 +69,7 @@ class FeiShuChanel(ChatChannel):
             # 图片上传
             reply_content = self._upload_image_url(reply.content, access_token)
             if not reply_content:
-                logger.warninging("[FeiShu] upload file failed")
+                logger.warning("[FeiShu] upload file failed")
                 return
             msg_type = "image"
             content_key = "image_key"
@@ -173,13 +173,13 @@ class FeishuController:
             event = request.get("event")
             if header.get("event_type") == self.MESSAGE_RECEIVE_TYPE and event:
                 if not event.get("message") or not event.get("sender"):
-                    logger.warninging(f"[FeiShu] invalid message, msg={request}")
+                    logger.warning(f"[FeiShu] invalid message, msg={request}")
                     return self.FAILED_MSG
                 msg = event.get("message")
 
                 # 幂等判断
                 if channel.receivedMsgs.get(msg.get("message_id")):
-                    logger.warninging(f"[FeiShu] repeat msg filtered, event_id={header.get('event_id')}")
+                    logger.warning(f"[FeiShu] repeat msg filtered, event_id={header.get('event_id')}")
                     return self.SUCCESS_MSG
                 channel.receivedMsgs[msg.get("message_id")] = True
 
@@ -198,7 +198,7 @@ class FeishuController:
                 elif chat_type == "p2p":
                     receive_id_type = "open_id"
                 else:
-                    logger.warninging("[FeiShu] message ignore")
+                    logger.warning("[FeiShu] message ignore")
                     return self.SUCCESS_MSG
                 # 构造飞书消息对象
                 feishu_msg = FeishuMessage(event, is_group=is_group, access_token=channel.fetch_access_token())
