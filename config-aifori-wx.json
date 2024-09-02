@@ -2,6 +2,7 @@
   "channel_type": "wx",
   "aifori_url": "http://localhost:9001",
   "aifori_assistant_id": "Aifori_wechat",
+  "xunfei_app_id": "9b5cc933",
   "clear_memory_commands": "清除记忆",
   "bot_type": "aifori",
   "hot_reload": true,

@@ -24,7 +24,7 @@ from config import conf
 import pysilk
 from pydub import AudioSegment
 from liteai.voice import file2voice
-# from liteai.api import asr
+from liteai.api import asr
 
 
 def mp3_to_silk(mp3_path, silk_path):
@@ -93,6 +93,7 @@ class AiforiVoice(Voice):
         logger.info(f"Aifori doing asr:{voice_file}")
 
         voice = file2voice(voice_file)
-        text = liteai.api.asr(voice=voice, model="xunfei_asr")
+        xunfei_app_id = conf().get("xunfei_app_id")
+        text = asr(voice=voice, model="xunfei_asr", app_id=xunfei_app_id)
         return Reply(ReplyType.TEXT, text)
 
